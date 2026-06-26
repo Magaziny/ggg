@@ -40,20 +40,25 @@ import db from "@/lib/db";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { GuestProvider } from "@/hooks/useGuest";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const mainBgSetting = db.prepare('SELECT value FROM settings WHERE key = ?').get('main_bg') as { value: string } | undefined;
-  const paperTexture = db.prepare('SELECT value FROM settings WHERE key = ?').get('paper_texture') as { value: string } | undefined;
+  const mainBgSettingResult = await db.execute({ sql: 'SELECT value FROM settings WHERE key = ?', args: ['main_bg'] });
+  const mainBgSetting = mainBgSettingResult.rows[0] as unknown as { value: string } | undefined;
+
+  const paperTextureResult = await db.execute({ sql: 'SELECT value FROM settings WHERE key = ?', args: ['paper_texture'] });
+  const paperTexture = paperTextureResult.rows[0] as unknown as { value: string } | undefined;
   
   const bgImage = mainBgSetting?.value || paperTexture?.value || '/images/paper-texture.png';
 
-  const themeSetting = db.prepare('SELECT value FROM settings WHERE key = ?').get('site_theme') as { value: string } | undefined;
+  const themeSettingResult = await db.execute({ sql: 'SELECT value FROM settings WHERE key = ?', args: ['site_theme'] });
+  const themeSetting = themeSettingResult.rows[0] as unknown as { value: string } | undefined;
   const themeClass = themeSetting?.value || 'theme-sage';
 
-  const headingFontSetting = db.prepare('SELECT value FROM settings WHERE key = ?').get('heading_font') as { value: string } | undefined;
+  const headingFontSettingResult = await db.execute({ sql: 'SELECT value FROM settings WHERE key = ?', args: ['heading_font'] });
+  const headingFontSetting = headingFontSettingResult.rows[0] as unknown as { value: string } | undefined;
   const headingFont = headingFontSetting?.value || 'Playfair_Display';
 
   const fontMap: Record<string, string> = {
@@ -72,7 +77,8 @@ export default function RootLayout({
   };
   const headingCssVar = fontMap[headingFont] || 'var(--font-playfair)';
 
-  const customHeadingFontUrlSetting = db.prepare('SELECT value FROM settings WHERE key = ?').get('custom_heading_font_url') as { value: string } | undefined;
+  const customHeadingFontUrlSettingResult = await db.execute({ sql: 'SELECT value FROM settings WHERE key = ?', args: ['custom_heading_font_url'] });
+  const customHeadingFontUrlSetting = customHeadingFontUrlSettingResult.rows[0] as unknown as { value: string } | undefined;
   const customFontUrl = customHeadingFontUrlSetting?.value || '';
 
   const isCustomFont = headingFont === 'Custom' && customFontUrl;
@@ -111,4 +117,3 @@ export default function RootLayout({
     </html>
   );
 }
-

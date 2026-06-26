@@ -1,9 +1,10 @@
 import db from "@/lib/db";
 import SettingsPanel from "@/components/admin/SettingsPanel";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
   try {
-    const settingsRows = db.prepare("SELECT * FROM settings").all() as { key: string; value: string }[];
+    const result = await db.execute("SELECT * FROM settings");
+    const settingsRows = result.rows as unknown as { key: string; value: string }[];
     const settings = settingsRows.reduce((acc: any, row) => {
       acc[row.key] = row.value;
       return acc;
