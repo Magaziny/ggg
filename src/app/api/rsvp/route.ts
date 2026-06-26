@@ -25,7 +25,7 @@ export async function POST(req: Request) {
           sql: 'SELECT name FROM guests WHERE id = ?',
           args: [guestId]
         });
-        const guest = guestResult.rows[0] as { name: string } | undefined;
+        const guest = guestResult.rows[0] as unknown as { name: string } | undefined;
         finalName = guest?.name;
       }
 

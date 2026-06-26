@@ -11,6 +11,7 @@ export const translations = {
       minutes: "minut",
       seconds: "sekunt",
       calendar: "Senenama goşmak",
+      wedding_title: "Toý çakylygy",
     },
     envelope: {
       open: "Açmak",
@@ -91,6 +92,7 @@ export const translations = {
       minutes: "минут",
       seconds: "секунд",
       calendar: "Добавить в календарь",
+      wedding_title: "Приглашение на свадьбу",
     },
     envelope: {
       open: "Открыть",

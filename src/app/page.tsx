@@ -10,8 +10,9 @@ import Footer from "@/components/sections/Footer";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const settingsRows = db.prepare('SELECT * FROM settings').all() as { key: string, value: string }[];
+export default async function Home() {
+  const result = await db.execute('SELECT * FROM settings');
+  const settingsRows = result.rows as unknown as { key: string, value: string }[];
   const settings = settingsRows.reduce((acc: any, row) => {
     acc[row.key] = row.value;
     return acc;
@@ -32,5 +33,3 @@ export default function Home() {
     </Envelope>
   );
 }
-
-
