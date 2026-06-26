@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import db from '@/lib/db';
+import db, { sanitizeRows } from '@/lib/db';
 import * as XLSX from 'xlsx';
 
 async function checkAuth() {
@@ -14,7 +14,7 @@ export async function GET() {
 
   try {
     const result = await db.execute("SELECT * FROM guests ORDER BY attending DESC, name ASC");
-    const guests: any[] = result.rows;
+    const guests: any[] = sanitizeRows(result.rows);
 
     // Prepare data for Excel
     const data = guests.map(g => ({

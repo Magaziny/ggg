@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import db from '@/lib/db';
+import db, { sanitizeRow } from '@/lib/db';
 
 export async function POST(req: Request) {
   try {
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       sql: 'SELECT * FROM guests WHERE phone LIKE ?',
       args: [`%${cleanPhone}%`]
     });
-    const guest = guestResult.rows[0] as any;
+    const guest = sanitizeRow(guestResult.rows[0]) as any;
 
     if (guest) {
       // Гость найден - логиним
@@ -72,7 +72,7 @@ export async function GET() {
         sql: 'SELECT * FROM guests WHERE id = ?',
         args: [guestData.id]
       });
-      const guest = guestResult.rows[0];
+      const guest = sanitizeRow(guestResult.rows[0]);
       if (guest) {
         return NextResponse.json({ authenticated: true, guest });
       }

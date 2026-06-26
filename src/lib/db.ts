@@ -109,7 +109,7 @@ export async function initDb() {
         ['thank_you_title_ru', 'Спасибо, что были с нами!'],
         ['thank_you_title_tk', 'Biziň bilen bolanyňyz üçin sag boluň!'],
         ['thank_you_desc_ru', 'Этот день стал особенным благодаря вам. Ниже вы можете найти фотографии и видео с нашего торжества.'],
-        ['thank_you_desc_tk', 'Siziň saýawyňyzda bu gün diýseň üýtgeşik boldy. Aşakda dabaramyzdan düşürilen suratlary we wideolary tapyp bilersiňiz.'],
+        ['thank_you_desc_tk', 'Siziň saýawyňyzda bu gün diýseň üýtgeşik boldy. Aşakда dabaramyzdan düşürilen suratlary we wideolary tapyp bilersiňiz.'],
         ['prof_photos_url', ''],
         ['prof_videos_url', ''],
         ['site_close_date', ''],
@@ -150,6 +150,31 @@ export async function getSetting(key: string): Promise<string | null> {
     console.error(`Error fetching setting ${key}:`, e);
     return null;
   }
+}
+
+// Вспомогательные функции для санитарии bigint (предотвращают падение JSON.stringify на Vercel)
+export function sanitizeRow(row: any): any {
+  if (!row) return row;
+  const clean: any = {};
+  for (const key in row) {
+    if (Object.prototype.hasOwnProperty.call(row, key)) {
+      const value = row[key];
+      if (typeof value === 'bigint') {
+        clean[key] = Number(value);
+      } else if (value instanceof Date) {
+        clean[key] = value;
+      } else if (typeof value === 'object' && value !== null) {
+        clean[key] = sanitizeRow(value);
+      } else {
+        clean[key] = value;
+      }
+    }
+  }
+  return clean;
+}
+
+export function sanitizeRows(rows: any[]): any[] {
+  return rows.map(row => sanitizeRow(row));
 }
 
 export default db;

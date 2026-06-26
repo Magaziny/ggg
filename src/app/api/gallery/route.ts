@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import db from '@/lib/db';
+import db, { sanitizeRows } from '@/lib/db';
 
 export async function GET() {
   try {
@@ -10,7 +10,7 @@ export async function GET() {
     // Если это админ — отдаем все фотографии
     if (adminSession && adminSession.value === 'active') {
       const result = await db.execute('SELECT * FROM gallery ORDER BY created_at DESC');
-      return NextResponse.json(result.rows);
+      return NextResponse.json(sanitizeRows(result.rows));
     }
 
     const guestSession = cookieStore.get('guest_session');
@@ -32,7 +32,7 @@ export async function GET() {
         sql: 'SELECT * FROM gallery WHERE guest_id = ? ORDER BY created_at DESC',
         args: [guestId]
       });
-      return NextResponse.json(result.rows);
+      return NextResponse.json(sanitizeRows(result.rows));
     } else {
       // Анонимные посетители не видят ничего
       return NextResponse.json([]);

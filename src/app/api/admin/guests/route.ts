@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import db from '@/lib/db';
+import db, { sanitizeRows } from '@/lib/db';
 
 async function checkAuth() {
   const cookieStore = await cookies();
@@ -13,7 +13,7 @@ export async function GET() {
   
   try {
     const result = await db.execute("SELECT * FROM guests ORDER BY created_at DESC");
-    return NextResponse.json(result.rows);
+    return NextResponse.json(sanitizeRows(result.rows));
   } catch (err) {
     return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
   }
