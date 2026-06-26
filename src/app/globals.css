@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotateX-180 {
+  transform: rotateX(180deg);
+}
+
+.rotateY-180 {
+  transform: rotateY(180deg);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+:root, .theme-sage {
+  --background: #FAF9F6;
+  --foreground: #36454F;
+  --wedding-sage: #8A9A5B;
+  --wedding-sage-light: #A7B484;
+  --wedding-champagne: #F7E7CE;
+  --wedding-graphite: #36454F;
+  --wedding-gold: #D4AF37;
+}
+
+.theme-blush {
+  --background: #FFE4E8; /* Нежно-розовый насыщенный фон */
+  --foreground: #4A3A3D;
+  --wedding-sage: #D291BC;
+  --wedding-sage-light: #EBBED6;
+  --wedding-champagne: #FFF0F2;
+  --wedding-graphite: #4A3A3D;
+  --wedding-gold: #B76E79;
+}
+
+.theme-ocean {
+  --background: #DCE6F2; /* Голубой морской фон */
+  --foreground: #102A43;
+  --wedding-sage: #334E68;
+  --wedding-sage-light: #627D98;
+  --wedding-champagne: #E8F0F8;
+  --wedding-graphite: #102A43;
+  --wedding-gold: #D4AF37;
+}
+
+.theme-terracotta {
+  --background: #F5E6DF; /* Теплый бежево-терракотовый фон */
+  --foreground: #4A2E2B;
+  --wedding-sage: #C15C3D;
+  --wedding-sage-light: #DE8971;
+  --wedding-champagne: #FAF0EB;
+  --wedding-graphite: #4A2E2B;
+  --wedding-gold: #D4AF37;
+}
+
+.theme-monochrome {
+  --background: #EFEFEF; /* Светло-серый фон */
+  --foreground: #111111;
+  --wedding-sage: #333333;
+  --wedding-sage-light: #888888;
+  --wedding-champagne: #FFFFFF;
+  --wedding-graphite: #111111;
+  --wedding-gold: #A9A9A9;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  @apply font-sans antialiased;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-serif;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--wedding-sage), var(--wedding-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--wedding-sage-light);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wedding-sage);
+}
+
+body.viewer-open .language-toggle {
+  display: none !important;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
